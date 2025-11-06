@@ -7,7 +7,11 @@
     <link rel="icon" href="https://pindad.com/assets/img/theme-1/logo.png" type="image/png">
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <!-- Tambahkan Firebase SDK -->
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-database-compat.js"></script>
     <style>
+        /* CSS tetap sama seperti sebelumnya */
         body {
             font-family: 'Montserrat', sans-serif;
             margin: 0;
@@ -198,7 +202,21 @@
     </div>
 
     <script>
-        // Fungsi untuk menyimpan saran di local storage
+        // Inisialisasi Firebase
+        const firebaseConfig = {
+            // GANTI DENGAN CONFIG FIREBASE ANDA (dari langkah 1)
+            apiKey: "YOUR_API_KEY",
+            authDomain: "YOUR_PROJECT_ID.firebaseapp.com",
+            databaseURL: "https://YOUR_PROJECT_ID-default-rtdb.firebaseio.com",
+            projectId: "YOUR_PROJECT_ID",
+            storageBucket: "YOUR_PROJECT_ID.appspot.com",
+            messagingSenderId: "YOUR_MESSAGING_SENDER_ID",
+            appId: "YOUR_APP_ID"
+        };
+        firebase.initializeApp(firebaseConfig);
+        const database = firebase.database();
+
+        // Fungsi untuk menyimpan saran ke Firebase
         document.getElementById('suggestion-form').addEventListener('submit', function(e) {
             e.preventDefault();
             const name = document.getElementById('name').value;
@@ -207,12 +225,9 @@
             
             const newSuggestion = { name, department, suggestion, date: new Date().toLocaleString() };
             
-            // Ambil saran yang ada dari local storage
-            let suggestions = JSON.parse(localStorage.getItem('sapa-suggestions')) || [];
-            suggestions.push(newSuggestion);
-            
-            // Simpan kembali
-            localStorage.setItem('sapa-suggestions', JSON.stringify(suggestions));
+            // Simpan ke Firebase
+            const suggestionsRef = database.ref('suggestions');
+            suggestionsRef.push(newSuggestion);
             
             // Reset form dan tampilkan pesan
             document.getElementById('suggestion-form').reset();
@@ -228,7 +243,7 @@
         // Fungsi login admin
         function loginAdmin() {
             const password = document.getElementById('admin-password').value;
-            if (password === 'pindad123') {  // Password diganti menjadi pindad123
+            if (password === 'pindad123') {
                 document.getElementById('admin-message').textContent = '';
                 loadSuggestions();
             } else {
@@ -236,35 +251,37 @@
             }
         }
         
-        // Fungsi untuk memuat dan menampilkan saran
+        // Fungsi untuk memuat dan menampilkan saran dari Firebase
         function loadSuggestions() {
-            const suggestions = JSON.parse(localStorage.getItem('sapa-suggestions')) || [];
-            const list = document.getElementById('suggestions-list');
-            list.innerHTML = '';
-            
-            if (suggestions.length === 0) {
-                list.innerHTML = '<li>Tidak ada saran yang dikirim.</li>';
-                return;
-            }
-            
-            suggestions.forEach((item, index) => {
-                const li = document.createElement('li');
-                li.innerHTML = `
-                    <strong>${item.name} (${item.department})</strong><br>
-                    ${item.suggestion}<br>
-                    <small>Dikirim pada: ${item.date}</small>
-                    <button class="delete-btn" onclick="deleteSuggestion(${index})">Hapus</button>
-                `;
-                list.appendChild(li);
+            const suggestionsRef = database.ref('suggestions');
+            suggestionsRef.on('value', (snapshot) => {
+                const suggestions = snapshot.val();
+                const list = document.getElementById('suggestions-list');
+                list.innerHTML = '';
+                
+                if (!suggestions) {
+                    list.innerHTML = '<li>Tidak ada saran yang dikirim.</li>';
+                    return;
+                }
+                
+                Object.keys(suggestions).forEach((key, index) => {
+                    const item = suggestions[key];
+                    const li = document.createElement('li');
+                    li.innerHTML = `
+                        <strong>${item.name} (${item.department})</strong><br>
+                        ${item.suggestion}<br>
+                        <small>Dikirim pada: ${item.date}</small>
+                        <button class="delete-btn" onclick="deleteSuggestion('${key}')">Hapus</button>
+                    `;
+                    list.appendChild(li);
+                });
             });
         }
         
-        // Fungsi untuk menghapus saran
-        function deleteSuggestion(index) {
-            let suggestions = JSON.parse(localStorage.getItem('sapa-suggestions')) || [];
-            suggestions.splice(index, 1);
-            localStorage.setItem('sapa-suggestions', JSON.stringify(suggestions));
-            loadSuggestions();
+        // Fungsi untuk menghapus saran dari Firebase
+        function deleteSuggestion(key) {
+            const suggestionsRef = database.ref('suggestions/' + key);
+            suggestionsRef.remove();
         }
     </script>
 </body>
