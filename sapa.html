@@ -1,0 +1,271 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SAPA</title>
+    <link rel="icon" href="https://pindad.com/assets/img/theme-1/logo.png" type="image/png">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        body {
+            font-family: 'Montserrat', sans-serif;
+            margin: 0;
+            padding: 0;
+            background: linear-gradient(135deg, #ffffff 0%, #f1c40f 50%, #3498db 100%);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .container {
+            max-width: 700px;
+            width: 100%;
+            background: white;
+            padding: 40px;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+            text-align: center;
+            border: 3px solid #3498db;
+        }
+        .logo {
+            width: 120px;
+            margin-bottom: 20px;
+            border-radius: 10px;
+            box-shadow: 0 5px 15px rgba(52, 152, 219, 0.3);
+        }
+        h1 {
+            color: #2c3e50;
+            margin-bottom: 10px;
+            font-weight: 700;
+        }
+        .subtitle {
+            color: #34495e;
+            font-size: 18px;
+            font-weight: 600;
+            margin-bottom: 20px;
+        }
+        p {
+            color: #7f8c8d;
+            margin-bottom: 30px;
+            font-size: 16px;
+            font-weight: 400;
+        }
+        form {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+        label {
+            text-align: left;
+            font-weight: 600;
+            color: #34495e;
+        }
+        input, textarea {
+            padding: 12px;
+            border: 2px solid #ecf0f1;
+            border-radius: 8px;
+            font-size: 14px;
+            transition: border-color 0.3s, box-shadow 0.3s;
+        }
+        input:focus, textarea:focus {
+            outline: none;
+            border-color: #3498db;
+            box-shadow: 0 0 8px rgba(52, 152, 219, 0.3);
+        }
+        button {
+            padding: 12px;
+            background: linear-gradient(135deg, #3498db, #f1c40f);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 16px;
+            font-weight: 600;
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+        button:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 20px rgba(52, 152, 219, 0.4);
+        }
+        button i {
+            margin-right: 8px;
+        }
+        #message {
+            margin-top: 20px;
+            color: #27ae60;
+            font-weight: 500;
+        }
+        #admin-section {
+            margin-top: 40px;
+            display: none;
+            border-top: 2px solid #ecf0f1;
+            padding-top: 30px;
+        }
+        #suggestions-list {
+            list-style: none;
+            padding: 0;
+            margin-top: 20px;
+        }
+        #suggestions-list li {
+            background: #f8f9fa;
+            padding: 15px;
+            margin-bottom: 15px;
+            border-radius: 8px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+            text-align: left;
+            border-left: 5px solid #f1c40f;
+        }
+        #suggestions-list li strong {
+            color: #3498db;
+        }
+        #suggestions-list li small {
+            color: #95a5a6;
+        }
+        .delete-btn {
+            background: #e74c3c;
+            color: white;
+            border: none;
+            padding: 5px 10px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 12px;
+            margin-left: 10px;
+            transition: background 0.2s;
+        }
+        .delete-btn:hover {
+            background: #c0392b;
+        }
+        .error {
+            color: #e74c3c;
+            font-weight: 500;
+        }
+        .share-link {
+            margin-top: 20px;
+            font-size: 14px;
+            color: #34495e;
+        }
+        .share-link a {
+            color: #3498db;
+            text-decoration: none;
+            font-weight: 600;
+        }
+        .share-link a:hover {
+            text-decoration: underline;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <img src="https://sorotmerahputih.com/wp-content/uploads/2025/10/IMG_0974.png" alt="Logo PT PINDAD" class="logo">
+        <h1>SAPA</h1>
+        <p class="subtitle">(Saran dan Partisipasi PINDAD)</p>
+        <p>Selamat datang di SAPA. Berikan saran tentang lingkungan kerja untuk meningkatkan kualitas kami.</p>
+        
+        <!-- Form untuk pekerja -->
+        <form id="suggestion-form">
+            <label for="name"><i class="fas fa-user"></i> Nama Lengkap:</label>
+            <input type="text" id="name" required>
+            
+            <label for="department"><i class="fas fa-building"></i> Departemen:</label>
+            <input type="text" id="department" required>
+            
+            <label for="suggestion"><i class="fas fa-comment"></i> Saran/Masukan:</label>
+            <textarea id="suggestion" rows="5" required></textarea>
+            
+            <button type="submit"><i class="fas fa-paper-plane"></i>Kirim Saran</button>
+        </form>
+        
+        <p id="message"></p>
+        
+        <!-- Tombol untuk admin -->
+        <button onclick="showAdmin()"><i class="fas fa-user-shield"></i>Masuk sebagai Admin</button>
+        
+        <!-- Bagian admin -->
+        <div id="admin-section">
+            <h2>Panel Admin - Daftar Saran</h2>
+            <label for="admin-password"><i class="fas fa-lock"></i> Password Admin:</label>
+            <input type="password" id="admin-password">
+            <button onclick="loginAdmin()"><i class="fas fa-sign-in-alt"></i>Login</button>
+            <p id="admin-message" class="error"></p>
+            <ul id="suggestions-list"></ul>
+        </div>
+        
+        <!-- Link untuk share web -->
+        <div class="share-link">
+            <p>Bagikan web ini: <a href="https://example.com/sapa.html" target="_blank">https://example.com/sapa.html</a></p>
+        </div>
+    </div>
+
+    <script>
+        // Fungsi untuk menyimpan saran di local storage
+        document.getElementById('suggestion-form').addEventListener('submit', function(e) {
+            e.preventDefault();
+            const name = document.getElementById('name').value;
+            const department = document.getElementById('department').value;
+            const suggestion = document.getElementById('suggestion').value;
+            
+            const newSuggestion = { name, department, suggestion, date: new Date().toLocaleString() };
+            
+            // Ambil saran yang ada dari local storage
+            let suggestions = JSON.parse(localStorage.getItem('sapa-suggestions')) || [];
+            suggestions.push(newSuggestion);
+            
+            // Simpan kembali
+            localStorage.setItem('sapa-suggestions', JSON.stringify(suggestions));
+            
+            // Reset form dan tampilkan pesan
+            document.getElementById('suggestion-form').reset();
+            document.getElementById('message').textContent = 'Terima kasih! Saran Anda telah dikirim.';
+            setTimeout(() => document.getElementById('message').textContent = '', 3000);
+        });
+        
+        // Fungsi untuk menampilkan bagian admin
+        function showAdmin() {
+            document.getElementById('admin-section').style.display = 'block';
+        }
+        
+        // Fungsi login admin
+        function loginAdmin() {
+            const password = document.getElementById('admin-password').value;
+            if (password === 'pindad123') {  // Password diganti menjadi pindad123
+                document.getElementById('admin-message').textContent = '';
+                loadSuggestions();
+            } else {
+                document.getElementById('admin-message').textContent = 'Password salah!';
+            }
+        }
+        
+        // Fungsi untuk memuat dan menampilkan saran
+        function loadSuggestions() {
+            const suggestions = JSON.parse(localStorage.getItem('sapa-suggestions')) || [];
+            const list = document.getElementById('suggestions-list');
+            list.innerHTML = '';
+            
+            if (suggestions.length === 0) {
+                list.innerHTML = '<li>Tidak ada saran yang dikirim.</li>';
+                return;
+            }
+            
+            suggestions.forEach((item, index) => {
+                const li = document.createElement('li');
+                li.innerHTML = `
+                    <strong>${item.name} (${item.department})</strong><br>
+                    ${item.suggestion}<br>
+                    <small>Dikirim pada: ${item.date}</small>
+                    <button class="delete-btn" onclick="deleteSuggestion(${index})">Hapus</button>
+                `;
+                list.appendChild(li);
+            });
+        }
+        
+        // Fungsi untuk menghapus saran
+        function deleteSuggestion(index) {
+            let suggestions = JSON.parse(localStorage.getItem('sapa-suggestions')) || [];
+            suggestions.splice(index, 1);
+            localStorage.setItem('sapa-suggestions', JSON.stringify(suggestions));
+            loadSuggestions();
+        }
+    </script>
+</body>
+</html>
