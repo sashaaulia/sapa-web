@@ -11,7 +11,6 @@
     <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-database-compat.js"></script>
     <style>
-        /* CSS tetap sama seperti sebelumnya */
         body {
             font-family: 'Montserrat', sans-serif;
             margin: 0;
@@ -144,19 +143,6 @@
             color: #e74c3c;
             font-weight: 500;
         }
-        .share-link {
-            margin-top: 20px;
-            font-size: 14px;
-            color: #34495e;
-        }
-        .share-link a {
-            color: #3498db;
-            text-decoration: none;
-            font-weight: 600;
-        }
-        .share-link a:hover {
-            text-decoration: underline;
-        }
     </style>
 </head>
 <body>
@@ -193,11 +179,6 @@
             <button onclick="loginAdmin()"><i class="fas fa-sign-in-alt"></i>Login</button>
             <p id="admin-message" class="error"></p>
             <ul id="suggestions-list"></ul>
-        </div>
-        
-        <!-- Link untuk share web -->
-        <div class="share-link">
-            <p>Bagikan web ini: <a href="https://example.com/sapa.html" target="_blank">https://example.com/sapa.html</a></p>
         </div>
     </div>
 
