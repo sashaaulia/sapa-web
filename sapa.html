@@ -11,6 +11,7 @@
     <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-database-compat.js"></script>
     <style>
+        /* CSS tetap sama seperti sebelumnya */
         body {
             font-family: 'Montserrat', sans-serif;
             margin: 0;
@@ -143,6 +144,19 @@
             color: #e74c3c;
             font-weight: 500;
         }
+        .share-link {
+            margin-top: 20px;
+            font-size: 14px;
+            color: #34495e;
+        }
+        .share-link a {
+            color: #3498db;
+            text-decoration: none;
+            font-weight: 600;
+        }
+        .share-link a:hover {
+            text-decoration: underline;
+        }
     </style>
 </head>
 <body>
@@ -180,6 +194,11 @@
             <p id="admin-message" class="error"></p>
             <ul id="suggestions-list"></ul>
         </div>
+        
+        <!-- Link untuk share web -->
+        <div class="share-link">
+            <p>Bagikan web ini: <a href="https://example.com/sapa.html" target="_blank">https://example.com/sapa.html</a></p>
+        </div>
     </div>
 
     <script>
@@ -189,8 +208,8 @@
             apiKey: "YOUR_API_KEY",
             authDomain: "YOUR_PROJECT_ID.firebaseapp.com",
             databaseURL: "https://YOUR_PROJECT_ID-default-rtdb.firebaseio.com",
-            projectId: "YOUR_PROJECT_ID",
-            storageBucket: "YOUR_PROJECT_ID.appspot.com",
+            projectId: "pindad-sapa",
+            storageBucket: "pindad-sapa.appspot.com",
             messagingSenderId: "YOUR_MESSAGING_SENDER_ID",
             appId: "YOUR_APP_ID"
         };
@@ -216,21 +235,21 @@
             setTimeout(() => document.getElementById('message').textContent = '', 3000);
         });
         
-        // Fungsi untuk menampilkan bagian admin
-        function showAdmin() {
-            document.getElementById('admin-section').style.display = 'block';
-        }
-        
-        // Fungsi login admin
-        function loginAdmin() {
-            const password = document.getElementById('admin-password').value;
-            if (password === 'pindad123') {
+            // Fungsi login admin
+    function loginAdmin() {
+        const password = document.getElementById('admin-password').value;
+        if (password === 'pindad123') {
+            try {
                 document.getElementById('admin-message').textContent = '';
                 loadSuggestions();
-            } else {
-                document.getElementById('admin-message').textContent = 'Password salah!';
+            } catch (error) {
+                console.error('Error loading suggestions:', error);
+                document.getElementById('admin-message').textContent = 'Error: ' + error.message;
             }
+        } else {
+            document.getElementById('admin-message').textContent = 'Password salah!';
         }
+    }
         
         // Fungsi untuk memuat dan menampilkan saran dari Firebase
         function loadSuggestions() {
